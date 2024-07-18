@@ -31,7 +31,7 @@ def wait_for_download(directory, filename, timeout=60):
 def driver():
     current_dir = os.path.dirname(os.path.abspath(__file__))            #Определяем путь для загрузки (папка исполняемого файла)
     download_dir = os.path.join(os.getcwd(), current_dir)
-    chrome_options = webdriver.ChromeOptions()                          #Настрока браузера (задаём папку для скачивания файлов)
+    chrome_options = webdriver.ChromeOptions()                          #Настрока браузера (скачивание файлов без подтверждения, задаём папку для скачивания файлов)
     prefs = {
         "download.default_directory": download_dir,
         "download.prompt_for_download": False,
@@ -52,11 +52,11 @@ def test1(driver):          #Проверка скачивания файла
     sbis_home.click_download_local_version()
     driver.get("https://update.sbis.ru/Sbis3Plugin/master/win32/sbisplugin-setup-web.exe")      #КОСТЫЛЬ. при использовании строк ниже - не хочет скачиваться(неизвестное исключение)
     #time.sleep(2)
-    #driver.find_element(By.XPATH, '//*[@id="ws-vd2gfky5rqs1721319524047"]/div[1]/div[2]/div[2]/div/a').click()
+    #driver.find_element(By.XPATH, '//*[@id="ws-vd2gfky5rqs1721319524047"]/div[1]/div[2]/div[2]/div/a').click()     #"кнопка" для скачивания
     download_dir = os.path.dirname(os.path.abspath(__file__))
     assert wait_for_download(download_dir, 'sbisplugin-setup-web.exe')              #Спорное решение с явным указанием имени файла, но если до этого он не был загружен
                                                                                             #в директорию с исполняемым файлом, то всё сработает. P.S. Если файл уже был загружен,
-                                                                                            #к его имени прибавляется "(1)"
+                                                                                            #при скачивании к его имени прибавляется "(1)"
 def test2(driver):          #Сравнение размера скаченного файла с заявленным
     driver.get("https://sbis.ru/")
     driver.implicitly_wait(10)
